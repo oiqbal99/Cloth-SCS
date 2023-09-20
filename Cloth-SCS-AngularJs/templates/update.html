@@ -1,0 +1,198 @@
+<div ng-controller="AdminUpdateController">
+    <h1>Update</h1>
+    <label for="tableSelect"><b>Select Table</b></label>
+    <select id="tableSelect" name="tableSelect" ng-options="table.label for table in tables track by table.label" ng-model="selected">
+        <option selected disabled value="">Select Table</option>
+    </select>
+    <script>
+        loadItems();
+    </script>
+
+    <div>
+        <form>
+            <div class="sign-wrapper">
+                <div class="sign-container">
+
+                    <!-- Order -->
+                    <div ng-if="selected.label === 'Order'" id="orderTableFields">
+
+                        <input type="text" name="tableSelect" value="Order" style="visibility:hidden"> </input>
+
+                        <label for="orderId"><b>Order ID</b></label>
+                        <input ng-model="inputs.orderId" type="text" name="orderId" required>
+
+                        <label for="DateIssued"><b>Date Issued</b></label>
+                        <input ng-model="inputs.dateIssued" type="date" name="dateIssued" >
+                        
+                        <label for="DateReceived"><b>Date Received</b></label>
+                        <input ng-model="inputs.dateReceived" type="date" name="dateReceived" >
+        
+                        <label for="TotalPrice"><b>Total Price</b></label>
+                        <input ng-model="inputs.totalPrice" type="text" name="totalPrice" >
+        
+                        <label for="Payment Code"><b>Payment Code</b></label>
+                        <input ng-model="inputs.paymentCode" type="text" name="paymentCode" >
+        
+                        <label for="UserId"><b>User ID</b></label>
+                        <input ng-model="inputs.userId" type="text" maxlength="11" name="userId" >
+        
+                        <label for="TripId"><b>Trip ID</b></label>
+                        <input ng-model="inputs.tripId" type="text" maxlength="11" name="tripId" >
+        
+                        <label for="ReceiptId"><b>Receipt ID</b></label>
+                        <input ng-model="inputs.receiptId" type="text" maxlength="11" name="receiptId" >
+        
+                        <label for="orderIsComp"><b>Completed</b></label>
+                        <select ng-model="inputs.orderIsComp" id="orderIsComp" name="orderIsComp" >
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+                    <!-- User -->
+                    <div ng-if="selected.label === 'User'" id="userTableFields">
+                        <input type="text" name="tableSelect" value="User" style="visibility:hidden"> </input>
+
+                        <label for="userId"><b>User ID</b></label>
+                        <input ng-model="inputs.userId" type="text" name="userId" required>
+
+                        <label for="userName"><b>Username</b></label>
+                        <input ng-model="inputs.userName" type="text" name="userName" >
+        
+                        <label for="userPass"><b>Password</b></label>
+                        <input ng-model="inputs.userPass" type="text" name="userPass" >
+        
+                        <label for="userEmail"><b>Email</b></label>
+                        <input ng-model="inputs.userEmail" type="text" name="userEmail" >
+                        
+                        <label for="userPhone"><b>Phone</b></label>
+                        <input ng-model="inputs.userPhone" type="text" name="userPhone" >
+        
+                        <label for="userAddress"><b>Address</b></label>
+                        <input ng-model="inputs.userAddress" type="text" name="userAddress" >
+        
+                        <label for="userCC"><b>City Code</b></label>
+                        <input ng-model="inputs.userCC" type="text" name="userCC" >
+        
+                        <label for="userBalance"><b>Balance</b></label>
+                        <input ng-model="inputs.userBalance" type="text" name="userBalance">
+        
+                        <label for="userIsAdmin"><b>Is Admin</b></label>
+                        <select  ng-model="inputs.userIsAdmin" id="userIsAdmin" name="userIsAdmin" >
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Item -->
+                    <div ng-if="selected.label === 'Item'" id="itemTableFields">
+                        <input type="text" name="tableSelect" value="Item" style="visibility:hidden"> </input>
+                        
+                        <label for="itemId"><b>Item ID</b></label>
+                        <input ng-model="inputs.itemId" type="text" name="itemId" required>
+
+                        <label for="itemName"><b>Name</b></label>
+                        <input ng-model="inputs.itemName" type="text" name="itemName" >
+                        
+                        <label for="itemPrice"><b>Price</b></label>
+                        <input ng-model="inputs.itemPrice" type="text" name="itemPrice" >
+        
+                        <label for="itemSource"><b>Source</b></label>
+                        <input ng-model="inputs.itemSource" type="text" name="itemSource" >
+        
+                        <label for="itemDest"><b>Destination</b></label>
+                        <input ng-model="inputs.itemDest" type="text" name="itemDest" >
+        
+                        <label for="itemUrl"><b>Image Url</b></label>
+                        <input ng-model="inputs.itemUrl" type="text" name="itemUrl" >
+                    </div>
+                    
+                    <!-- Shopping -->
+                    <div ng-if="selected.label === 'Shopping'" id="shoppingTableFields">
+                        <input type="text" name="tableSelect" value="Shopping" style="visibility:hidden"> </input>
+
+                        <label for="shoppingId"><b>Shopping ID</b></label>
+                        <input ng-model="inputs.shoppingId" type="text" name="shoppingId" required>
+        
+                        <label for="storeCode"><b>Store Code</b></label>
+                        <input ng-model="inputs.storeCode" type="text" name="storeCode" required>
+                        
+                        <label for="shoppingPrice"><b>Price</b></label>
+                        <input ng-model="inputs.shoppingPrice" type="text" name="shoppingPrice" required>
+                    </div>
+                    
+                    <!-- Trip -->
+                    <div ng-if="selected.label === 'Trip'" id="tripTableFields">
+                        <input type="text" name="tableSelect" value="Trip" style="visibility:hidden"> </input>
+        
+                        <label for="tripId"><b>Trip ID</b></label>
+                        <input ng-model="inputs.tripId" type="text" name="tripId" required>
+
+                        <label for="srcCode"><b>Source Code</b></label>
+                        <input ng-model="inputs.srcCode" type="text" name="srcCode" required>
+                        
+                        <label for="destCode"><b>Destination Code</b></label>
+                        <input ng-model="inputs.destCode" type="text" name="destCode" required>
+        
+                        <label for="tripDist"><b>Distance</b></label>
+                        <input ng-model="inputs.tripDist" type="text" name="tripDist" required>
+        
+                        <label for="tripTruckId"><b>Truck ID</b></label>
+                        <input ng-model="inputs.tripTruckId" type="text" name="tripTruckId" required>
+        
+                        <label for="tripPrice"><b>Price</b></label>
+                        <input ng-model="inputs.tripPrice" type="text" name="tripPrice" required>
+                    </div>
+
+                    <!-- Truck -->
+                    <div ng-if="selected.label === 'Truck'" id="truckTableFields">
+                        <input type="text" name="tableSelect" value="Truck" style="visibility:hidden"> </input>
+
+                        <label for="truckId"><b>Truck ID</b></label>
+                        <input ng-model="inputs.truckId" type="text" name="truckId" required>
+        
+                        <label for="truckCode"><b>Truck Code</b></label>
+                        <input ng-model="inputs.truckCode" type="text" name="truckCode" required>
+                        
+                        <label for="truckAvailCode"><b>Availabilty Code</b></label>
+                        <input ng-model="inputs.truckAvailCode" type="text" name="availCode" required>
+                    </div>
+
+                   <div ng-if="selected.label === 'Review'" id="reviewTableFields">
+                        <input type="text" name="tableSelect" value="Review" style="visibility:hidden"> </input>
+                        
+                        <label for="reviewId"><b>Review Id <b></label>
+                        <input type="text" ng-model="inputs.reviewId" id="reviewId" name="reviewId"></input>
+
+                        <label for="UserId"><b>User Id <b></label>
+                        <input type="text" ng-model="inputs.user_Id" id="user_Id" name="user_Id"></input>
+
+                        <label for="ratingNumber"><b>Rating</b></label>
+                        <select ng-model="inputs.ratingNumber" id="ratingNumber" name="ratingNumber">
+                            <option value="1">1: Very Bad</option>
+                            <option value="2">2: Bad</option>
+                            <option value="3">3: Ok</option>
+                            <option value="4">4: Good</option>
+                            <option value="5">5: Very Good</option>
+                        </select>
+
+                        <label for="itemNumber"><b>Item <b></label>
+                        <input type="text" ng-model="inputs.itemNumber" id="itemNumber" name="itemNumber"></input>
+
+                        <label for="reviewText"><b>Review</b></label>
+                        <input ng-model="inputs.reviewText" type="Text" name="reviewText">
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div ng-click="updateRecord()" ng-if="selected !== null" class="sign-multiple-column sign-end">
+                        <input type="submit" value="UPDATE">
+                    </div>
+        
+                </div>
+            </div>
+        </form>
+    </div>
+    <div ng-if="outputs.message" class="insert-blurb">
+        {{outputs.message}}
+    </div>
+</div>

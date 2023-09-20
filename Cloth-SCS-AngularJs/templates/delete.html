@@ -1,0 +1,78 @@
+<div ng-controller="AdminDeleteController">
+    <h1>Delete</h1>
+    <label for="tableSelect"><b>Select Table</b></label>
+    <select id="tableSelect" name="tableSelect" ng-options="table.label for table in tables track by table.label" ng-model="selected">
+        <option selected disabled value="">Select Table</option>
+    </select>
+    <div>
+        <form>
+            <div class="sign-wrapper">
+                <div class="sign-container">
+
+                    <!-- Order -->
+                    <div ng-if="selected.label === 'Order'" id="orderTableFields">
+                        <input type="text" name="tableSelect" value="Order" style="visibility:hidden"> </input>
+                        <label for="orderId"><b>Order ID</b></label>
+                        <input ng-model="inputs.orderId" type="text" name="orderId" required>
+                    </div>
+
+                    <!-- User -->
+                    <div ng-if="selected.label === 'User'" id="userTableFields">
+                        <input type="text" name="tableSelect" value="User" style="visibility:hidden"> </input>
+                        <label for="userId"><b>User ID</b></label>
+                        <input ng-model="inputs.userId" type="text" name="userId" required>
+                    </div>
+                    
+                    <!-- Item -->
+                    <div ng-if="selected.label === 'Item'" id="itemTableFields">
+                        <input type="text" name="tableSelect" value="Item" style="visibility:hidden"> </input>
+                        <label for="itemId"><b>Item ID</b></label>
+                        <input ng-model="inputs.itemId" type="text" name="itemId" required>
+                    </div>
+                    
+                    <!-- Shopping -->
+                    <div ng-if="selected.label === 'Shopping'" id="shoppingTableFields">
+                        <input type="text" name="tableSelect" value="Shopping" style="visibility:hidden"> </input>
+                        <label for="shoppingId"><b>Shopping ID</b></label>
+                        <input ng-model="inputs.shoppingId" type="text" name="shoppingId" required>
+                    
+                    </div>
+                    
+                    <!-- Trip -->
+                    <div ng-if="selected.label === 'Trip'" id="tripTableFields">
+                        <input type="text" name="tableSelect" value="Trip" style="visibility:hidden"> </input>
+                        <label for="tripId"><b>Trip ID</b></label>
+                        <input ng-model="inputs.tripId" type="text" name="tripId" required>
+                        
+                    </div>
+
+                    <!-- Truck -->
+                    <div ng-if="selected.label === 'Truck'" id="truckTableFields">
+                        <input type="text" name="tableSelect" value="Truck" style="visibility:hidden"> </input>
+                        <label for="truckId"><b>Truck ID</b></label>
+                        <input ng-model="inputs.truckId" type="text" name="truckId" required>
+                        
+                    </div>
+
+                    <!-- Review -->
+                    <div ng-if="selected.label === 'Review'" id="reviewTableFields">
+                        <input type="text" name="tableSelect" value="Review" style="visibility:hidden"> </input>
+
+                        <label for="reviewId"><b>Review ID</b></label>
+                        <input ng-model="inputs.reviewId" type="text" name="reviewCode" required>
+                        
+                    </div>
+                                        
+                    <!-- Submit Button -->
+                    <div ng-click="deleteRecord()" ng-if="selected !== null" class="sign-multiple-column sign-end">
+                        <input type="submit" value="DELETE">
+                    </div>
+        
+                </div>
+            </div>
+        </form>
+    </div>
+    <div ng-if="outputs.message" class="insert-blurb">
+        {{outputs.message}}
+    </div>
+</div>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html ng-controller="SignUpAdminController">
+
+<form action="validate-sign-up.php" method="post">
+    <div class="sign-wrapper">
+        <div class="sign-container">
+            <h1>Admin Sign Up</h1>
+            <p>
+                Register an account to gain administrator rights. On submit, you
+                will have to answer the correct <b>admin code</b>.
+            </p>
+            <label for="username"><b>Username / Login ID</b></label>
+            <input type="text" name="username" autocomplete="username" required>
+            <span class="error-text"></span>
+            <label for="email"><b>Email</b></label>
+            <input type="email" name="email" autocomplete="email" required>
+            <div class="sign-multiple-column">
+                <div>
+                    <label for="fname"><b>First name</b></label>
+                    <input type="text" name="fname" autocomplete="off" required>
+                </div>
+                <div>
+                    <label for="lname"><b>Last name</b></label>
+                    <input type="text" name="lname" autocomplete="off" required>
+                </div>
+            </div>
+            <label for="password"><b>Password</b></label>
+            <input type="password" name="password" autocomplete="new-password" onChange="onPassChange()" required>
+            <label for="password_conf"><b>Confirm Password</b></label>
+            <input type="password" name="password_conf" autocomplete="new-password" onChange="onPassChange()" required>
+            <div class="sign-multiple-column">
+                <div>
+                    <label for="phone"><b>Phone #</b></label>
+                    <input type="text" name="phone" placeholder="(XXX) YYY-ZZZZ" autocomplete="tel-local" required>
+                </div>
+                <div>
+                    <label for="address"><b>Address</b></label>
+                    <input type="text" name="address" autocomplete="street-address" required>
+                </div>
+            </div>
+            <input type="hidden" name="is_admin" value="1">
+            <div class="sign-multiple-column sign-end">
+                <input type="submit" value="Sign Up" onclick="return verifyAdminCode();">
+                <a href="#!/sign-up">For Users</a>
+            </div>
+            <script>
+                runSignUpValidation();
+            </script>
+        </div>
+    </div>
+</form>

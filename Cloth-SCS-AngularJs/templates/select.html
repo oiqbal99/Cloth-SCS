@@ -1,0 +1,45 @@
+<div ng-controller="AdminSelectController">
+    <style>
+        th {
+            margin: 10px;
+            border-style: solid;
+            text-align: left;
+            word-wrap: break-word;
+            min-width: 150px;
+        }
+    </style>
+
+    <h1>Select</h1>
+    <label for="tableSelect"><b>Select Table</b></label>
+    <select id="tableSelect" name="tableSelect" ng-options="table.label for table in tables track by table.label" ng-model="selected">
+        <option selected disabled value="">Select Table</option>
+    </select>
+
+    <form>
+        <div ng-if="selected !== null" class="sign-wrapper">
+            <div class="sign-container">
+                <div id="orderTableFields">
+                    <input type="text" name="tableSelect" value="{{selected.label}}" style="display: none"></input>
+                    <label for="orderid"><b>{{selected.label}} ID</b></label>
+                    <input ng-model="inputs.recordIds" ng-change="sanitizeRecordIds()" type="text" required>
+                </div>
+                <div ng-click="getRecords()" class="sign-multiple-column sign-end">
+                    <input type="submit" value="SELECT">
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <br></br>
+    <br></br>
+    
+    <table ng-model="outputs.records" id="previousDisplay">
+        <tr>
+            <th ng-repeat="(key, _) in outputs.records[0]">{{key}}</th>
+        </tr>
+        <tr ng-repeat="record_row in outputs.records">
+            <td ng-repeat="value in record_row">{{value}}</td>
+        </tr>
+    
+    </table>
+</div>

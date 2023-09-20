@@ -1,0 +1,57 @@
+<div ng-controller="HomeController" id="home-controller">
+    <script>
+        runPageScriptHome();
+    </script>
+    <div class="home-page-container" ng-model="cart">
+        <div id="service-a" class="home-page-service">
+            <h1>Service A: Product List</h1>
+            <div class="product-list">
+            </div>
+        </div>
+        <form id="delivery-form" action="" method="">
+            <div id="service-b" class="home-page-service" ng-show="showServiceB">
+                <h1>Service B: Branch-Destination Picker</h1>
+                <div id="map"></div>
+                <br>
+                <br>
+                <label for="datetime">Delivery Date and Time:</label>
+                <input type="text" id="datetime" name="datetime">
+                <br>
+                <br>
+                <label for="branch">Delivery Branch:</label>
+                <select id="branch" name="branch">
+                    <option value="RBC Royal Bank, 200 Bay St. Main Floor, Toronto, ON">Branch A</option>
+                    <option value="220 Yonge St, Toronto, ON">Branch B</option>
+                    <option value="3401 Dufferin St, Toronto, ON">Branch C</option>
+                </select>
+                <br>
+                <br>
+                <label for="address">Delivery Address:</label>
+                <input type="text" id="address" name="address"><br>
+                <br>
+                <br>
+                <button id="delivery-form-submit">Use Delivery</button>
+                <h2 id="distance"></h2>
+                <input type="hidden" id="distance-field" name="distance"><br>
+            </div>        
+            <div id="invoice-sum-redir" class="home-page-service" style="display: none">
+                <h1>Payment Form</h1>
+                <label for="ccnumber">Credit Card No.:</label>
+                <input type="text" id="ccnumber" name="ccnumber" placeholder="XXXX-XXXX-XXXX-XXXX" value=""><br>
+                <br>
+                <label for="cvvcvccode">CVV/CVC Code:</label>
+                <input type="text" id="cvvcvccode" name="cvvcvccode" placeholder="XXX"><br>
+                <br>
+                <label for="cardholder">Cardholder Name:</label>
+                <input type="text" id="cardholder" name="cardholder"><br>
+                <br>
+                <label for="instituteno">Institution No.:</label>
+                <input type="text" id="instituteno" name="instituteno" placeholder="XXX"><br>
+                <br>
+                <br>
+                <button id="proceed-bttn" type="submit" disabled>Proceed</button>
+            </div>
+        </form>
+        <div id="invoiceResult"></div>
+    </div>
+</div>

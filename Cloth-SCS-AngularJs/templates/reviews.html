@@ -1,0 +1,55 @@
+<div ng-controller="ReviewController" id="review-controller">
+    <style>
+        th {
+            margin: 10px;
+            border-style: solid;
+            text-align: left;
+            word-wrap: break-word;
+            min-width: 150px;
+        }
+    </style>
+
+    <script>
+        runPageScriptReview();
+    </script>
+    <div class="home-page-container" ng-model="cart">
+        <h1>New Review</h1>
+        <div class="signin-wrapper">
+            <div class="signin-container">
+                <form id="reviewForm" name="reviewForm" action="" method="post">
+    
+                    <label for="ratingNumber"><b>Rating</b></label>
+                    <select id="ratingNumber" name="ratingNumber">
+                        <option value="1">1: Very Bad</option>
+                        <option value="2">2: Bad</option>
+                        <option value="3">3: Ok</option>
+                        <option value="4">4: Good</option>
+                        <option value="5">5: Very Good</option>
+                    </select>
+                    <label for="itemNumber"><b>Item <b></label>
+                    <select id="itemNumber" name="itemNumber">
+                        
+                    </select>
+    
+                    <label for="reviewText"><b>Review</b></label>
+                    <input tyle="height:200px;font-size:14pt;" type="Text" name="reviewText" required>
+    
+                    <br></br>
+                    <input type="submit" value="ADD">
+                </form>
+    
+                <h1>Reviews</h1>
+    
+                <table id="previousDisplay">
+                    <tr>
+                        <th>User ID </th>
+                        <th>Review </th>
+                        <th>Rank Number </th>
+                        <th>Item </th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    
+    </div>
+</div>

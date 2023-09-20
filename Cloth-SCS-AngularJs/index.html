@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+
+<html ng-app="App">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Customer Services</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;600&family=Barlow:wght@400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
+    <script type="text/javascript" src="js/services.js"></script>
+    <script type="text/javascript" src="js/request.js"></script>
+    <script type="text/javascript" src="js/query.js"></script>
+    <script type="text/javascript" src="js/drag-events.js"></script>
+    <script type="text/javascript" src="js/page-scripts.js"></script>
+
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9ZTPniubrJsiFxvSRB4nqVetQ_D0cptY&libraries=places&callback=Function.prototype"></script>
+    <script src="js/services.js"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+
+    <!-- load models (NOT SURE FOR NOW) -->
+    <script type="text/javascript" src="models/cart.js"></script>
+    <script type="text/javascript" src="models/session.js"></script>
+    <script>
+        runPageScriptIndex();
+    </script>
+</head>
+
+<body>
+    <header class="overlay">
+        <div ng-controller="HeaderController" class="header-container" id="header-controller">
+            <h1 class="header-logo">
+                <a href="#!/" id="header-logo-anchor">
+                    cloth-scs
+                </a>
+            </h1>
+
+            <nav class="header-nav">
+                <a href="#!/">Home</a>
+                <a href="#!/about-us">About Us</a>
+                <a href="#!/reviews">Reviews</a>
+                <a href="#!/contact-us">Contact Us</a>
+                <a href="#!/search">Search</a>
+                <div ng-if="user.is_admin" class="dropdown">
+                    DBMaintain
+                    <div class="dropdown-content">
+                        <a href="#!/select">
+                            <div>SELECT</div>
+                        </a>
+                        <a href="#!/insert">
+                            <div>INSERT</div>
+                        </a>
+                        <a href="#!/update">
+                            <div>UPDATE</div>
+                        </a>
+                        <a href="#!/delete">
+                            <div>DELETE</div>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+
+            <nav class="header-nav header-nav-rside">
+                <span ng-if="user.is_logged_in" class="login-display {{user.is_admin ? 'admin' : ''}}">
+                    <a href="./#" onclick="signOut();">{{user.login_id}}</a>
+                </span>
+                <div ng-if="user.is_logged_in" class="cart-widget-container" ondrop="dropProduct(event)" ondragover="allowDrop(event)">
+                    <a href="#!/shopping-cart">
+                        <img src="images/shopping-cart.svg" alt="Shopping Cart" width="28" height="28" class="no-user-select" />
+                    </a>
+                </div>
+                <a ng-if="!user.is_logged_in" href="#!/sign-in">Sign In</a>
+                <a ng-if="!user.is_logged_in" href="#!/sign-up">Sign Up</a>
+            </nav>
+
+            <nav class="menu-nav">
+                <div ng-if="user.is_logged_in" class="cart-widget-container" ondrop="dropProduct(event)" ondragover="allowDrop(event)">
+                    <a href="#!/shopping-cart">
+                        <img src="images/shopping-cart.svg" alt="Shopping Cart" width="28" height="28" class="no-user-select" />
+                    </a>
+                </div>
+
+                <div class="menu-widget" onclick="toggleMenu()">
+                    <img src="images/menu-toggle.svg" alt="Shopping Cart" width="24" height="24"
+                        class="no-user-select" />
+                </div>
+
+                <div id="menu-container" style="display: none;">
+                    <div ng-if="user.is_logged_in" class="login-display {{user.is_admin ? 'admin' : ''}}">
+                        {{user.login_id}}
+                    </div>
+                    <a href="#/">
+                        <div>Home</div>
+                    </a>
+                    <a href="#!about-us">
+                        <div>About Us</div>
+                    </a>
+                    <a href="#!/reviews">
+                        <div>Reviews</div>
+                    </a>
+                    <a href="#!/contact-us">
+                        <div>Contact Us</div>
+                    </a>
+                    <a href="#!/search">
+                        <div>Search</div>
+                    </a>
+                    <div ng-if="user.is_admin" class="dropdown">
+                        DBMaintain
+                        <div class="dropdown-content">
+                            <a href="#!/select">
+                                <div>SELECT</div>
+                            </a>
+                            <a href="#!/insert">
+                                <div>INSERT</div>
+                            </a>
+                            <a href="#!/update">
+                                <div>UPDATE</div>
+                            </a>
+                            <a href="#!/delete">
+                                <div>DELETE</div>
+                            </a>
+                        </div>
+                    </div>
+                    <a ng-if="user.is_logged_in" href="./#" onclick="signOut();">
+                        <div>Sign Out</div>
+                    </a>
+                    <a ng-if="!user.is_logged_in" href="#!/sign-in">
+                        <div>Sign In</div>
+                    </a>
+                    <a ng-if="!user.is_logged_in" href="#!/sign-up">
+                        <div>Sign Up</div>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div id="content">
+
+        <main ng-view></main>
+
+
+        <!-- load controllers (ADD AS NEEDED)-->
+        <!-- <script src="controllers/home.js"></script>
+        <script src="controllers/signup.js"></script>
+        <script src="controllers/signin.js"></script>
+        <script src="controllers/signout.js"></script>
+        <script src="controllers/reviews.js"></script>
+        <script src="controllers/cart.js"></script>
+        <script src="controllers/checkedout.js"></script>
+        <script src="controllers/"></script>
+        <script src="controllers/"></script>
+        <script src="controllers/"></script>
+        <script src="controllers/"></script>
+        <script src="controllers/"></script> -->
+
+        <script>
+
+            var app = angular.module('App', ['ngRoute']);
+            app.config(function ($routeProvider) {
+                $routeProvider.when('/', {
+                    title: 'Home',
+                    templateUrl: 'templates/home.html',
+                    controller: 'HomeController'
+                }).when("/about-us", {
+                    templateUrl: "templates/about.html",
+                    controller: "AboutController"
+                }).when("/contact-us", {
+                    templateUrl: "templates/contact-us.html",
+                    controller: "ContactController"
+                }).when("/search", {
+                    templateUrl: "templates/search.html",
+                    controller: "SearchController"
+                }).when("/reviews", {
+                    templateUrl: "templates/reviews.html",
+                    controller: "ReviewController"
+                }).when("/sign-up", {
+                    templateUrl: "templates/sign-up.html",
+                    controller: "SignUpController"
+                }).when("/sign-in", {
+                    templateUrl: "templates/sign-in.html",
+                    controller: "SignInController"
+                }).when("/sign-up-admin", {
+                    templateUrl: "templates/sign-up-admin.html",
+                    controller: "SignUpAdminController"
+                }).when("/shopping-cart", {
+                    templateUrl: "templates/shopping-cart.html",
+                    controller: "ShoppingCartController"    
+                }).when("/confirm-purchase", {
+                    templateUrl: "templates/confirm-purchase.html",
+                    controller: "ConfirmPurchase"     
+                }).when("/select", {
+                    templateUrl: "templates/select.html",
+                    controller: "AdminSelectController"     
+                }).when("/delete", {
+                    templateUrl: "templates/delete.html",
+                    controller: "AdminDeleteController"     
+                }).when("/update", {
+                    templateUrl: "templates/update.html",
+                    controller: "AdminUpdateController"     
+                }).when("/insert", {
+                    templateUrl: "templates/insert.html",
+                    controller: "AdminInsertController"     
+                }).otherwise({ redirectTo: '/' });
+            });
+
+            app.service('ReloadStore', function() {
+                let store = {};
+
+                this.set = function(key, value) {
+                    store[key] = value;
+                };
+
+                this.get = function(key) {
+                    return store[key];
+                };
+            });
+
+            app.controller("HeaderController", async function ($scope, $location, $window, $route) {
+                $scope.updateHeaderDisplay = async (redirect_home) => {
+                    const { result: result } = await HTTPRequest.post("./api/auth.php", {
+                        function: "get_session_user",
+                    });
+                    $scope.user = {
+                        login_id: result["login_id"],
+                        is_admin: result["is_admin"],
+                        is_logged_in: result["is_logged_in"],
+                    };
+                    if (redirect_home) {
+                        $location.path('#!/');
+                    }
+                    $route.reload();
+                }
+
+                $scope.updateHeaderDisplay(false);
+            });
+            app.controller("HomeController", function ($scope) {
+                $scope.cart = Cart.as_dict();
+                $scope.showServiceB = Object.keys($scope.cart).length > 0;
+
+                $scope.updateCart = () => {
+                    $scope.cart = Cart.as_dict();
+                    $scope.showServiceB = Object.keys($scope.cart).length > 0;
+                }
+            });
+            app.controller("AboutController", function ($scope) {
+            });
+            app.controller("ContactController", function ($scope) {
+            });
+            app.controller("SearchController", function ($scope) {
+            });
+            app.controller("ReviewController", function ($scope) {
+            });
+            app.controller("SignUpController", function ($scope) {
+            });
+            app.controller("SignInController", function ($scope) {
+            });
+            app.controller("SignUpAdminController", function ($scope) {
+            });
+            app.controller("ShoppingCartController", function ($scope) {
+            });
+            app.controller("ConfirmPurchase", function ($scope) {
+            });
+            app.controller("AdminSelectController", function ($scope, $route, ReloadStore) {
+                $scope.tables = [
+                    { label: "Order" },
+                    { label: "Item" },
+                    { label: "User" },
+                    { label: "Truck" },
+                    { label: "Trip" },
+                    { label: "Shopping" },
+                    { label: "Review" },
+                ];
+                $scope.inputs = {
+                    recordIds: "",
+                };
+                $scope.outputs = {
+                    records: ReloadStore.get("select_records") ?? [],
+                };
+                $scope.selected = ReloadStore.get("select_table") ?? null;
+
+                $scope.getRecords = async () => {
+                    const response = await HTTPRequest.post("./api/dbmaintain.php", {
+                        function: "select",
+                        arguments: [$scope.selected.label, $scope.inputs.recordIds],
+                    });
+                    $scope.outputs.records = response?.result?.records ?? [];
+
+                    ReloadStore.set("select_records", $scope.outputs.records);
+                    ReloadStore.set("select_table", $scope.selected);
+                    $route.reload();
+                };
+
+                $scope.sanitizeRecordIds = () => {
+                    let currIds = $scope.inputs.recordIds ?? "";
+                    let sanitized = "";
+                    for (let i = 0; i < currIds.length; i++) {
+                        if ("0123456789".includes(currIds[i])) {
+                            sanitized += currIds[i];
+                        }
+                        else if (currIds[i] === ',' && i > 0 && currIds[i - 1] !== ',') {
+                            sanitized += currIds[i];
+                        }
+                    }
+                    $scope.inputs.recordIds = sanitized;
+                };
+            });
+            app.controller("AdminUpdateController", function ($scope, $route, ReloadStore) {
+                $scope.tables = [
+                { label: "Order" },
+                { label: "Item" },
+                { label: "User" },
+                { label: "Truck" },
+                { label: "Trip" },
+                { label: "Shopping" },
+                { label: "Review" },
+            ];
+            $scope.inputs = {};
+            $scope.outputs = {
+                message: ReloadStore.get("update_message") ?? "",
+            };
+            $scope.selected = ReloadStore.get("update_table") ?? null
+
+            $scope.updateRecord = async () => {
+                let update_args = [];
+
+                switch ($scope.selected?.label) {
+                    case "Truck":
+                        update_args = [
+                            $scope.selected?.label,
+                            $scope.inputs?.truckId,
+                            $scope.inputs?.truckCode,
+                            $scope.inputs?.truckAvailCode,
+                        ];
+                        break;
+                    case "Order":
+                        update_args = [
+                            $scope.selected?.label,
+                            $scope.inputs?.orderId,
+                            $scope.inputs?.dateIssued,
+                            $scope.inputs?.dateReceived,
+                            $scope.inputs?.totalPrice,
+                            $scope.inputs?.paymentCode,
+                            $scope.inputs?.userId,
+                            $scope.inputs?.tripId,
+                            $scope.inputs?.receiptId,
+                            $scope.inputs?.orderIsComp,
+                        ];
+                        break;
+                    case "Item":
+                        update_args = [
+                            $scope.selected?.label,
+                            $scope.inputs?.itemId,
+                            $scope.inputs?.itemName,
+                            $scope.inputs?.itemPrice,
+                            $scope.inputs?.itemSource,
+                            $scope.inputs?.itemDest,
+                            $scope.inputs?.itemUrl,
+                        ];
+                        break;
+                     case "User":
+                        update_args = [
+                            $scope.selected?.label,
+                            $scope.inputs?.userId,
+                            $scope.inputs?.loginId,
+                            $scope.inputs?.userPass,
+                            $scope.inputs?.userName,
+                            $scope.inputs?.userEmail,
+                            $scope.inputs?.userPhone,
+                            $scope.inputs?.userAddress,
+                            $scope.inputs?.userCC,
+                            $scope.inputs?.userBalance,
+                            $scope.inputs?.salt,
+                            $scope.inputs?.userIsAdmin,
+                        ];
+                        break; 
+                    case "Shopping":
+                        update_args = [
+                            $scope.selected?.label,
+                            $scope.inputs?.shopping_id,
+                            $scope.inputs?.storeCode,
+                            $scope.inputs?.shoppingPrice,
+                        ];
+                        break;  
+                    case "Trip":
+                        update_args = [
+                            $scope.selected?.label,
+                            $scope.inputs?.tripId,
+                            $scope.inputs?.srcCode,
+                            $scope.inputs?.destCode,
+                            $scope.inputs?.tripDist,
+                            $scope.inputs?.tripTruckId,
+                            $scope.inputs?.tripPrice,
+                        ];
+                        break;  
+                     case "Review":
+                        update_args = [
+                            $scope.selected?.label,
+                            $scope.inputs?.reviewId,
+                            $scope.inputs?.user_id,
+                            $scope.inputs?.itemNumber,
+                            $scope.inputs?.ratingNumber,
+                            $scope.inputs?.reviewText,
+                        ];
+                        break;     
+                    default:
+                        console.error(`Unhandled label: ${$scope.selected?.label}`)
+                        return
+                }
+
+                await HTTPRequest.post("./api/dbmaintain.php", {
+                    function: "update",
+                    arguments: update_args,
+                });
+                ReloadStore.set("update_message", `Successfully updated a record in ${$scope.selected?.label}`);
+                ReloadStore.set("update_table", $scope.selected);
+                $route.reload();
+            };
+
+            });
+            app.controller("AdminInsertController", function ($scope, $route, ReloadStore) {
+                $scope.tables = [
+                    { label: "Order" },
+                    { label: "Item" },
+                    { label: "User" },
+                    { label: "Truck" },
+                    { label: "Trip" },
+                    { label: "Shopping" },
+                    { label: "Review" },
+                ];
+                $scope.inputs = {};
+                $scope.outputs = {
+                    message: ReloadStore.get("insert_message") ?? "",
+                };
+                $scope.selected = ReloadStore.get("insert_table") ?? null;
+
+                $scope.insertRecord = async () => {
+                    let insert_args = [];
+
+                    switch ($scope.selected?.label) {
+                        case "Truck":
+                            insert_args = [
+                                $scope.selected?.label,
+                                $scope.inputs?.truckCode,
+                                $scope.inputs?.truckAvailCode,
+                            ];
+                            break;
+                        case "Order":
+                            insert_args = [
+                                $scope.selected?.label,
+                                $scope.inputs?.dateIssued,
+                                $scope.inputs?.dateReceived,
+                                $scope.inputs?.totalPrice,
+                                $scope.inputs?.paymentCode,
+                                $scope.inputs?.userId,
+                                $scope.inputs?.tripId,
+                                $scope.inputs?.receiptId,
+                                $scope.inputs?.orderIsComp,
+                            ];
+                            break;
+                        case "Item":
+                            insert_args = [
+                                $scope.selected?.label,
+                                $scope.inputs?.itemName,
+                                $scope.inputs?.itemPrice,
+                                $scope.inputs?.itemSource,
+                                $scope.inputs?.itemDest,
+                                $scope.inputs?.itemUrl,
+                            ];
+                            break;
+                         case "User":
+                            insert_args = [
+                                $scope.selected?.label,
+                                $scope.inputs?.loginId,
+                                $scope.inputs?.userPass,
+                                $scope.inputs?.userName,
+                                $scope.inputs?.userEmail,
+                                $scope.inputs?.userPhone,
+                                $scope.inputs?.userAddress,
+                                $scope.inputs?.userCC,
+                                $scope.inputs?.userBalance,
+                                $scope.inputs?.salt,
+                                $scope.inputs?.userIsAdmin,
+                            ];
+                            break; 
+                        case "Shopping":
+                            insert_args = [
+                                $scope.selected?.label,
+                                $scope.inputs?.storeCode,
+                                $scope.inputs?.shoppingPrice,
+                            ];
+                            break;  
+                        case "Trip":
+                            insert_args = [
+                                $scope.selected?.label,
+                                $scope.inputs?.srcCode,
+                                $scope.inputs?.destCode,
+                                $scope.inputs?.tripDist,
+                                $scope.inputs?.tripTruckId,
+                                $scope.inputs?.tripPrice,
+                            ];
+                            break;  
+                         case "Review":
+                            insert_args = [
+                                $scope.selected?.label,
+                                $scope.inputs?.user_id,
+                                $scope.inputs?.itemNumber,
+                                $scope.inputs?.ratingNumber,
+                                $scope.inputs?.reviewText,
+                            ];
+                            break;     
+                        default:
+                            console.error(`Unhandled label: ${$scope.selected?.label}`)
+                            return
+                    }
+
+                    await HTTPRequest.post("./api/dbmaintain.php", {
+                        function: "insert",
+                        arguments: insert_args,
+                    });
+                    ReloadStore.set("insert_message", `Successfully inserted new record into ${$scope.selected?.label}`);
+                    ReloadStore.set("insert_table", $scope.selected);
+                    $route.reload();
+                };
+            });
+            
+            app.controller("AdminDeleteController", function ($scope, $route, ReloadStore) {
+                $scope.tables = [
+                { label: "Order" },
+                { label: "Item" },
+                { label: "User" },
+                { label: "Truck" },
+                { label: "Trip" },
+                { label: "Shopping" },
+                { label: "Review" },
+            ];
+            $scope.inputs = {};
+            $scope.outputs = {
+                message: ReloadStore.get("delete_message") ?? "",
+            };
+            $scope.selected = ReloadStore.get("delete_table") ?? null;
+
+            $scope.deleteRecord = async () => {
+                let delete_args = [];
+
+                switch ($scope.selected?.label) {
+                    case "Truck":
+                    delete_args = [
+                            $scope.selected?.label,
+                            $scope.inputs?.truckId,
+                        ];
+                        break;
+                    case "Order":
+                    delete_args = [
+                            $scope.selected?.label,
+                            $scope.inputs?.orderId,
+                        ];
+                        break;
+                    case "Item":
+                    delete_args = [
+                            $scope.selected?.label,
+                            $scope.inputs?.itemId,
+                         
+                        ];
+                        break;
+                     case "User":
+                     delete_args = [
+                            $scope.selected?.label,
+                            $scope.inputs?.userId,
+                            
+                        ];
+                        break; 
+                    case "Shopping":
+                    delete_args = [
+                            $scope.selected?.label,
+                            $scope.inputs?.shoppingId,
+                           
+                        ];
+                        break;  
+                    case "Trip":
+                    delete_args = [
+                            $scope.selected?.label,
+                            $scope.inputs?.tripId,
+                            
+                        ];
+                        break;  
+                     case "Review":
+                     delete_args = [
+                            $scope.selected?.label,
+                            $scope.inputs?.reviewId,
+                        ];
+                        break;     
+                    default:
+                        console.error(`Unhandled label: ${$scope.selected?.label}`)
+                        return
+                }
+
+                await HTTPRequest.post("./api/dbmaintain.php", {
+                    function: "delete",
+                    arguments: delete_args,
+                });
+                ReloadStore.set("delete_message", `Successfully deleted record into ${$scope.selected?.label}`);
+                ReloadStore.set("delete_table", $scope.selected);
+                $route.reload();
+            };
+
+            });
+
+            app.run(['$rootScope', '$window', function ($rootScope, $window) {
+                $rootScope.$on('$routeChangeSuccess',
+                    function (event, current, previous) {
+                        $rootScope.title = current.$$route.title;
+                        $rootScope.css = current.$$route.css;
+                    });
+            }]);
+
+            function brdetect() {
+                const res = navigator.userAgent;
+                
+                const contentNode = $("footer");
+                let browserBlurb = "<div class=\"browser-blurb\"><b>";
+
+                if (res.indexOf("Edg") != -1 || res.indexOf("Trident") != -1 || res.indexOf("Internet Explorer") != -1) {
+                    browserBlurb += "Browser: Internet Explorer (Edge)";
+                } else if (res.indexOf("Chrome") != -1) {
+                    browserBlurb += "Browser: Chrome";
+                } else if (res.indexOf("Firefox") != -1) {
+                    browserBlurb += "Browser: Firefox";
+                } else {
+                    browserBlurb += "Browser: unknown";
+                }
+                browserBlurb += "</b></div>";
+
+                contentNode.append(browserBlurb);
+            }
+        </script>
+    </div>
+</body>
+
+<footer>
+    <script>brdetect();</script>
+</footer>
+
+</html>
